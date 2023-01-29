@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - './src:/var/www/html'
+    depends_on:
+      - mysql
+
+  mysql:
+    build:
+      context: ./docker/mysql
+    environment:
+      MYSQL_DATABASE: 3gis
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - './docker/volume/mysql:/var/lib/mysql'
+      - './docker/mysql/create_schema:/docker-entrypoint-initdb.d'
+    ports:
+      - '3306:3306'
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+
+  nginx:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - './src:/var/www/html'
+      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+    depends_on:
+      - php
