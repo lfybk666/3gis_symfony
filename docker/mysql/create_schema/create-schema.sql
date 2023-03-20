@@ -1,20 +1,55 @@
-CREATE DATABASE 3gis;
+CREATE DATABASE IF NOT EXISTS 3gis;
+use 3gis;
 
--- use 3gis;
---
--- CREATE TABLE firms (
---     id int not null,
---     title varchar not null,
---     primary key (id)
--- );
+CREATE TABLE IF NOT EXISTS rubric
+(
+    id SMALLINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id)
+);
 
--- CREATE TABLE buildings (
---
--- );
--- CREATE TABLE headings (
---
--- );
--- CREATE TABLE users (
---
--- );
+CREATE TABLE IF NOT EXISTS building
+(
+    id SMALLINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS firm
+(
+    id SMALLINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    rubric_id SMALLINT NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS user
+(
+    id SMALLINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE INDEX UNIQ_EMAIL (email)
+);
+
+CREATE TABLE IF NOT EXISTS rubric_firm
+(
+    rubric_id SMALLINT NOT NULL,
+    firm_id SMALLINT NOT NULL,
+    FOREIGN KEY rubric_id (rubric_id)
+        REFERENCES rubric (id) ON DELETE CASCADE,
+    FOREIGN KEY firm_id (firm_id)
+        REFERENCES firm (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS building_firm
+(
+    building_id SMALLINT NOT NULL,
+    firm_id SMALLINT NOT NULL,
+    FOREIGN KEY building_id (building_id)
+        REFERENCES building (id) ON DELETE CASCADE,
+    FOREIGN KEY firm_id (firm_id)
+        REFERENCES firm (id) ON DELETE CASCADE
+);
 
