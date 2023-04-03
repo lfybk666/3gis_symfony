@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Services;
+namespace App\Services;
 
 use \RuntimeException;
 use \PDO;
 use \PDOException;
-use config\Settings;
+use App\config\Settings;
 
 class DBConnection extends PDO
 {
@@ -25,6 +25,7 @@ class DBConnection extends PDO
                 $dbSettings['DB_PASS'],
             );
         } catch (PDOException $e) {
+            // TODO мне кажется что это тоже не работает
             throw new RuntimeException('Ошибка подключения к базе данных' . $e->getMessage());
         }
 

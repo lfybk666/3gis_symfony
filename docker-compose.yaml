@@ -28,8 +28,9 @@ services:
     ports:
       - "8996:80"
     volumes:
-      - '3gis_nginx:/var/www/html'
-      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+      - 3gis_nginx:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./public:/var/www/html/public
     depends_on:
       - php
 
