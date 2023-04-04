@@ -12,6 +12,6 @@ $app = new Application();
 $app->router->get('/', function () {
     echo 'index';
 });
-$app->router->get('/rubrics', [RubricController::class, 'getRubricList']);
+$app->router->get('/rubrics', [new RubricController, 'getRubricList']);
 
 $app->run();

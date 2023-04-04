@@ -18,21 +18,13 @@ class RubricController
 
     }
 
-    public function getRubricList(): Response
+    public function getRubricList()
     {
         $connection = DBConnection::getInstance();
         $rubrics = $connection->query('select * from rubric');
         $rubrics->setFetchMode(PDO::FETCH_CLASS, Rubric::class);
 
-        return new Response($rubrics);
+        return $rubrics->fetchAll();
     }
 
-}
-
-
-$connection = DBConnection::getInstance();
-$rubrics = $connection->query('select * from rubric');
-$rubrics->setFetchMode(PDO::FETCH_CLASS, Rubric::class);
-foreach ($rubrics as $rubric) {
-    print_r($rubric);
 }
