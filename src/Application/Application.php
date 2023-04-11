@@ -19,8 +19,8 @@ class Application
         $this->router = new Router($this->request, $this->response);
     }
 
-    public function run()
+    public function run(): Response
     {
-       print_r($this->router->resolve());
+       return $this->router->resolve();
     }
 }

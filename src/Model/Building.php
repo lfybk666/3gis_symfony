@@ -44,4 +44,19 @@ class Building
         $this->firm = $firm;
         return $this;
     }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
+
+    public function __sleep(): array
+    {
+        // TODO: Implement __sleep() method.
+    }
+
+    public function __wakeup(): void
+    {
+        // TODO: Implement __wakeup() method.
+    }
 }

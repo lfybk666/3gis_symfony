@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application;
+declare(strict_types=1);
 
-//use \Exception;
+namespace App\Application;
 
 class Router
 {
@@ -23,17 +23,18 @@ class Router
         $this->routes['post'][$path] = $callback;
     }
 
-    public function resolve()
+    public function resolve(): Response
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
         if (!$callback) {
-            // TODO сделать throw ,Когда стану чуть умнее ,ибо ща чет не получается(
-//            throw new \Exception('not found', 404);
-            $this->response->setStatusCode(404);
-            echo 'Not found'; die;
+//            throw new \Exception('Not found', 404);
+            trigger_error('', E_USER_ERROR);
+//            $this->response->setStatusCode(404);
+//            echo 'Not found'; die;
         }
+
         return $callback();
     }
 
