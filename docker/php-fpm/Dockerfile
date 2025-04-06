@@ -1,8 +1,16 @@
-FROM php:8.3.0-fpm-alpine
+FROM php:8.3.0-fpm-alpine3.19
 
 # Install packages
-RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash
+RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash && apk add --update linux-headers
 RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable mysqli pdo pdo_mysql
+
+ARG INSTALL_XDEBUG=false
+RUN if [ ${INSTALL_XDEBUG} = true ]; \
+    then \
+      pecl install xdebug && docker-php-ext-enable xdebug && pecl clear-cache; \
+    fi;
+
+COPY ./docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # Configure non-root user.
 ARG PUID=1000
@@ -17,7 +25,7 @@ WORKDIR /var/www
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-#RUN composer install --no-interaction
+RUN composer install --no-interaction
 
 CMD php-fpm
 
